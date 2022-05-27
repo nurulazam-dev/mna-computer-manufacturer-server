@@ -40,7 +40,7 @@ async function run() {
 
 
     //products api
-    app.get('/products',verifyJWT, async (req, res) => {
+    app.get('/products', async (req, res) => {
       const query = {};
       const curser = productCollection.find(query);
       const products = await curser.toArray();
@@ -48,7 +48,7 @@ async function run() {
     });
 
     //reviews api
-    app.get('/reviews',verifyJWT,async (req, res) => {
+    app.get('/reviews',async (req, res) => {
       const query = {};
       const curser = reviewCollection.find(query);
       const reviews = await curser.toArray();
