@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const jwt = require('jsonwebtoken')
 const port = process.env.PORT || 5000;
@@ -53,6 +53,14 @@ async function run() {
       const result = await productCollection.insertOne(product);
       res.send(result);
     });
+
+    //product delete api
+    app.delete('/products/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productCollection.deleteOne(query);
+      res.send(result)
+  });
 
     //reviews api
     app.get('/reviews',async (req, res) => {
