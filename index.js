@@ -47,6 +47,13 @@ async function run() {
       res.send(products)
     });
 
+    // Product add API 
+    app.post('/products', async (req, res) => {
+      const product = req.body;
+      const result = await productCollection.insertOne(product);
+      res.send(result);
+    });
+
     //reviews api
     app.get('/reviews',async (req, res) => {
       const query = {};
