@@ -70,14 +70,21 @@ async function run() {
       res.send(reviews)
     });
 
+    // Review add/insetOne API 
+    app.post('/reviews', async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
     //all users API
-    app.get('/user',verifyJWT, async (req, res) => {
+    app.get('/users',verifyJWT, async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
     });
 
     //users API
-    app.put('/user/:email', async (req, res) => {
+    app.put('/users/:email', async (req, res) => {
       const email = req.params.email;
       const user = req.body;
       const filter = { email: email };
