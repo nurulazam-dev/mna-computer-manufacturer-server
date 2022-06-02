@@ -78,7 +78,7 @@ async function run() {
     });
 
     //all users API
-    app.get('/users',verifyJWT, async (req, res) => {
+    app.get('/users', async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
     });
@@ -95,6 +95,25 @@ async function run() {
       const result = await userCollection.updateOne(filter, updateDoc, options);
       const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
       res.send({ result, token });
+    });
+
+    // admin check from users
+    app.get('/admin/:email', async (req, res) => {
+      const email = req.params.email;
+      const user = await userCollection.findOne({ email: email });
+      const isAdmin = user.role === 'admin';
+      res.send({ admin: isAdmin })
+    })
+
+    // Admin API
+    app.put('/users/admin/:email', verifyJWT, verifyAdmin, async (req, res) => {
+      const email = req.params.email;
+      const filter = { email: email };
+      const updateDoc = {
+        $set: { role: 'admin' },
+      };
+      const result = await userCollection.updateOne(filter, updateDoc);
+      res.send(result);
     })
 
 
