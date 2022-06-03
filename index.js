@@ -37,6 +37,7 @@ async function run() {
     const productCollection = client.db('computer_manufacturer').collection('products');
     const reviewCollection = client.db('computer_manufacturer').collection('reviews');
     const userCollection = client.db('computer_manufacturer').collection('users');
+    const orderCollection = client.db('computer_manufacturer').collection('orders');
 
 
     //products api
