@@ -62,6 +62,28 @@ async function run() {
       const result = await productCollection.deleteOne(query);
       res.send(result)
   });
+    //orders api
+    app.get('/orders', async (req, res) => {
+      const query = {};
+      const curser = orderCollection.find(query);
+      const orders = await curser.toArray();
+      res.send(orders)
+    });
+
+    // orders add API 
+    app.post('/orders', async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.send(result);
+    });
+
+    //orders delete api
+    app.delete('/orders/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await orderCollection.deleteOne(query);
+      res.send(result)
+  });
 
     //reviews api
     app.get('/reviews',async (req, res) => {
