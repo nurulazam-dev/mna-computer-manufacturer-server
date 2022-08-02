@@ -39,7 +39,6 @@ async function run() {
     const userCollection = client.db('computer_manufacturer').collection('users');
     const orderCollection = client.db('computer_manufacturer').collection('orders');
 
-
     //products api
     app.get('/products', async (req, res) => {
       const query = {};
@@ -100,6 +99,15 @@ async function run() {
       res.send(result);
     });
 
+    // ============================================
+    // User add/insetOne API 
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
+    // ============================================
+
     //all users API
     app.get('/users', async (req, res) => {
       const users = await userCollection.find().toArray();
@@ -119,6 +127,18 @@ async function run() {
       const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
       res.send({ result, token });
     });
+
+    // Admin verify
+    const verifyAdmin = async (req, res, next) => {
+      const requester = req.decoded.email;
+      const requesterAccount = await userCollection.findOne({ email: requester });
+      if (requesterAccount.role === 'admin') {
+        next();
+      }
+      else {
+        res.status(403).send({ message: 'forbidden' });
+      }
+    }
 
     // admin check from users
     app.get('/admin/:email', async (req, res) => {
