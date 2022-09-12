@@ -18,4 +18,4 @@
 
 #### Use Technology: 
 - Frond-End: `React.JS`, `React Router Dom`, `React Tailwind CSS`, `DaisyUI`, `React fontawesome`, `React Icons`, `Google Firebase`, `React firebase hooks`, `React hook form`, `React Toastify`.
-- Back-End: `Express.JS`, `MongoDB`, `Node.JS`, `Json Web Token (JWT)`, `Cors`, `Dotenv`.
+- Back-End: `Express.JS`, `MongoDB`, `Node.JS`, `Json Web Token (JWT)`, `Cors`, `Dotenv`, `Stripe`.
