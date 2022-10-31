@@ -1,8 +1,8 @@
 ## MNA Computer Manufacturer
 
-#### Live link: https://mna-computer-manufacturer.web.app
+#### Live project link: https://mna-computer-manufacturer.web.app
 
-- Client side link: https://github.com/mnaofficialbd/mna-computer-manufacturer-client
+- Client side repository link: https://github.com/mnaofficialbd/mna-computer-manufacturer-client
 <hr />
 
 - This project / website is about a Computer Manufacturer parts selling website ( MNA Computer Manufacturer ).
