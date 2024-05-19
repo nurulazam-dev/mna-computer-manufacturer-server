@@ -103,7 +103,7 @@ async function run() {
     // get all orders(admin) *=========
     app.get("/orders", verifyJWT, async (req, res) => {
       const orders = await ordersCollection.find().toArray();
-      res.send(orders);
+      res.send(orders.reverse());
     });
 
     // get my orders (user)*======
@@ -114,7 +114,7 @@ async function run() {
         const orders = await ordersCollection
           .find({ customer: customer })
           .toArray();
-        return res.send(orders);
+        return res.send(orders.reverse());
       } else {
         return res.status(403).send({ message: "Forbidden access" });
       }
@@ -186,7 +186,7 @@ async function run() {
     // all users API*==========
     app.get("/users", verifyJWT, async (req, res) => {
       const users = await usersCollection.find().toArray();
-      res.send(users);
+      res.send(users.reverse());
     });
 
     // get current user*=========
