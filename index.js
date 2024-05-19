@@ -1,48 +1,57 @@
-const express = require('express');
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const cors = require('cors');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const jwt = require('jsonwebtoken')
+const express = require("express");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const cors = require("cors");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
-require('dotenv').config();
+require("dotenv").config();
 const app = express();
 
 //middleware
 app.use(cors());
 app.use(express.json());
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.8dh86.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+});
 
 //JWT verify======
 function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    return res.status(401).send({ message: 'UnAuthorized access' });
+    return res.status(401).send({ message: "UnAuthorized access" });
   }
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
     if (err) {
-      return res.status(403).send({ message: 'Forbidden access' })
-    }
-    else {
+      return res.status(403).send({ message: "Forbidden access" });
+    } else {
       req.decoded = decoded;
       next();
     }
   });
 }
 
-
 async function run() {
   try {
     await client.connect();
-    console.log("mongo eating steel");
+    console.log("MNA Computer Manufacturer");
 
-    const productsCollection = client.db("computer_manufacturer").collection("products");
-    const ordersCollection = client.db("computer_manufacturer").collection("orders");
-    const paymentsCollection = client.db("computer_manufacturer").collection("payments");
-    const usersCollection = client.db("computer_manufacturer").collection("users");
+    const productsCollection = client
+      .db("computer_manufacturer")
+      .collection("products");
+    const ordersCollection = client
+      .db("computer_manufacturer")
+      .collection("orders");
+    const paymentsCollection = client
+      .db("computer_manufacturer")
+      .collection("payments");
+    const usersCollection = client
+      .db("computer_manufacturer")
+      .collection("users");
     const reviewsCollection = client
       .db("computer_manufacturer")
       .collection("reviews");
@@ -50,13 +59,14 @@ async function run() {
     /* ========================================================
                              Product
     ======================================================== */
-    //get all products api *
+    //get all products api *=======
     app.get("/products", async (req, res) => {
       const products = await productsCollection.find().toArray();
-      res.send(products);
+      // res.send(products);
+      res.send(products.reverse());
     });
 
-    // get a product api *
+    // get a product api *============
     app.get("/product/purchase/:purchaseId", verifyJWT, async (req, res) => {
       const id = req.params.purchaseId;
       const query = { _id: ObjectId(id) };
@@ -64,14 +74,14 @@ async function run() {
       res.send(product);
     });
 
-    // post/add a Product API *
+    // post/add a Product API *=============
     app.post("/products", verifyJWT, async (req, res) => {
       const product = req.body;
       const result = await productsCollection.insertOne(product);
       res.send(result);
     });
 
-    // product delete api *
+    // product delete api *===========
     app.delete("/product/:id", verifyJWT, async (req, res) => {
       const id = req.params.id;
       const product = { _id: ObjectId(id) };
@@ -82,7 +92,7 @@ async function run() {
     /* ========================================================
                              order
     ======================================================== */
-    // get a order *
+    // get a order *==========
     app.get("/order/:id", verifyJWT, async (req, res) => {
       const product = req.params.id;
       const query = { _id: ObjectId(product) };
@@ -90,13 +100,13 @@ async function run() {
       res.send(order);
     });
 
-    // get all orders(admin) *
+    // get all orders(admin) *=========
     app.get("/orders", verifyJWT, async (req, res) => {
       const orders = await ordersCollection.find().toArray();
       res.send(orders);
     });
 
-    // get my orders (user)*
+    // get my orders (user)*======
     app.get("/order", verifyJWT, async (req, res) => {
       const customer = req.query.customer;
       const decodedEmail = req.decoded.email;
@@ -110,14 +120,14 @@ async function run() {
       }
     });
 
-    // post/add an order API*
+    // post/add an order API*============
     app.post("/order", async (req, res) => {
       const order = req.body;
       const result = await ordersCollection.insertOne(order);
       res.send(result);
     });
 
-    // delete my order api*
+    // delete my order api*======
     app.delete("/order/:id", verifyJWT, async (req, res) => {
       const id = req.params.id;
       const order = { _id: ObjectId(id) };
@@ -125,7 +135,23 @@ async function run() {
       res.send(result);
     });
 
-    // update payment status & add payment in paymentCollection*
+    /* ========================================================
+                              payment
+    ======================================================== */
+
+    // get payment intent*==========
+    app.post("/create-payment-intent", verifyJWT, async (req, res) => {
+      const shouldPay = req.body.shouldPay;
+      const amount = shouldPay * 100;
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: "usd",
+        payment_method_types: ["card"],
+      });
+      res.send({ clientSecret: paymentIntent.client_secret });
+    });
+
+    // update payment status & add payment in paymentCollection*==========
     app.put("/orders/:id", verifyJWT, async (req, res) => {
       const id = req.params.id;
       const payment = req.body;
@@ -141,7 +167,7 @@ async function run() {
       res.send(result);
     });
 
-    // set shipment*
+    // set shipment*========
     app.put("/order/:id", verifyJWT, async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
@@ -155,40 +181,22 @@ async function run() {
     });
 
     /* ========================================================
-                              payment
-    ======================================================== */
-
-    // get payment intent*
-    app.post("/create-payment-intent", verifyJWT, async (req, res) => {
-      const shouldPay = req.body.shouldPay;
-      const amount = shouldPay * 100;
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: amount,
-        currency: "usd",
-        payment_method_types: ["card"],
-      });
-      res.send({ clientSecret: paymentIntent.client_secret });
-    });
-
-
-
-    /* ========================================================
                              user
     ======================================================== */
-    // all users API*
+    // all users API*==========
     app.get("/users", verifyJWT, async (req, res) => {
       const users = await usersCollection.find().toArray();
       res.send(users);
     });
 
-    // get current user*
+    // get current user*=========
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
       const user = await usersCollection.findOne({ email: email });
       res.send(user);
     });
 
-    // put/update signUp user data*
+    // put/update signUp user data*========
     app.put("/users", async (req, res) => {
       const email = req.query.email;
       const user = req.body;
@@ -212,7 +220,7 @@ async function run() {
       res.send({ result, token });
     });
 
-    // put/update user data from my profile data API*
+    // put/update user data from my profile data API*=======
     app.put("/users/:email", verifyJWT, async (req, res) => {
       const email = req.params.email;
       const user = req.body;
@@ -232,7 +240,7 @@ async function run() {
       res.send(result);
     });
 
-    // get admin check from users*
+    // get admin check from users*=====
     app.get("/users/admin/:email", verifyJWT, async (req, res) => {
       const email = req.params.email;
       const user = await usersCollection.findOne({ email: email });
@@ -240,7 +248,7 @@ async function run() {
       res.send({ admin: isAdmin });
     });
 
-    // put/make Admin API*
+    // put/make Admin API*===========
     app.put("/users/admin/:id", verifyJWT, async (req, res) => {
       const id = req.params.id;
       const requester = req.decoded.email;
@@ -260,30 +268,28 @@ async function run() {
     /* ========================================================
                               review
     ======================================================== */
-    // get all reviews api*
+    // get all reviews api*============
     app.get("/reviews", async (req, res) => {
       const reviews = await reviewsCollection.find().toArray();
-      res.send(reviews);
+      res.send(reviews.reverse());
     });
 
-    // post/add a Review API*
+    // post/add a Review API*=======
     app.post("/reviews", verifyJWT, async (req, res) => {
       const review = req.body;
       const result = await reviewsCollection.insertOne(review);
       res.send(result);
     });
-
-
   } finally {
   }
 }
 
-run().catch(console.dir)
+run().catch(console.dir);
 
-app.get('/', (req, res) => {
-  res.send('MNA Computer Manufacturer Server is Run')
-})
+app.get("/", (req, res) => {
+  res.send("MNA Computer Manufacturer Server is Run");
+});
 
 app.listen(port, () => {
   console.log("Running", port);
-})
+});
