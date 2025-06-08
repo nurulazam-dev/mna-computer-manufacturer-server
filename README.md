@@ -1,7 +1,7 @@
 # MNA Computer Manufacturer
 
 **Live Site:** [https://mna-computer-manufacturer.web.app](https://mna-computer-manufacturer.web.app)  
-**Client Repository:** [GitHub - mna-computer-manufacturer-client](https://github.com/mnaofficialbd/mna-computer-manufacturer-client)
+**Client Repository:** [GitHub - mna-computer-manufacturer-client](https://github.com/nurulazam-dev/mna-computer-manufacturer-client)
 
 ---
 
