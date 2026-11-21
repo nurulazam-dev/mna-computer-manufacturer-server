@@ -117,3 +117,36 @@ For any queries, contact via the portfolio section or raise an issue on GitHub.
 ---
 
 **Thank you for visiting MNA Computer Manufacturer!**
+
+Backend Technology Stack
+Language
+
+TypeScript
+
+Runtime
+
+Node.js
+
+Framework
+
+Express.js
+
+Database
+
+MongoDB Native Driver
+
+Architecture
+
+Modular Architecture
+
+Validation
+
+Zod
+
+Authentication
+
+JWT
+
+Payment
+
+Stripe
