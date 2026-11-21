@@ -1,1 +1,7 @@
-// MongoDB collection queries for users will live here.
+import type { Document } from "mongodb";
+
+export type User = Document & {
+  email: string;
+  role?: "admin" | "user" | string;
+  [key: string]: unknown;
+};

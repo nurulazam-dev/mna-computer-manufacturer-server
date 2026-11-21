@@ -1,10 +1,30 @@
 import { Router } from "express";
+import { productController } from "./product.controller.js";
+import { verifyJWT, requireAdmin } from "../../middlewares/auth.middleware.js";
+import { asyncHandler } from "../../utils/async-handler.js";
 
 export const productRouter = Router();
+
 export const productPurchaseRouter = Router();
 
-// productRouter is mounted at /products.
-// TODO: GET /, POST /, DELETE /:id
+productRouter.get("/", asyncHandler(productController.list));
 
-// productPurchaseRouter is mounted at /product.
-// TODO: GET /purchase/:purchaseId
+productRouter.post(
+  "/",
+  verifyJWT,
+  requireAdmin,
+  asyncHandler(productController.create),
+);
+
+productRouter.delete(
+  "/:id",
+  verifyJWT,
+  requireAdmin,
+  asyncHandler(productController.remove),
+);
+
+productPurchaseRouter.get(
+  "/purchase/:purchaseId",
+  verifyJWT,
+  asyncHandler(productController.getPurchase),
+);

@@ -1,1 +1,3 @@
-// MongoDB collection queries for reviews will live here.
+import type { Document } from "mongodb";
+
+export type Review = Document & { [key: string]: unknown };
