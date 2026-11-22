@@ -118,54 +118,27 @@ For any queries, contact via the portfolio section or raise an issue on GitHub.
 
 **Thank you for visiting MNA Computer Manufacturer!**
 
-Backend Technology Stack
-Language
+## Backend Technology Stack
 
-TypeScript
+| ###                | Purpose               |
+| :----------------- | :-------------------- |
+| **Language**       | TypeScript            |
+| **Runtime**        | Node.js               |
+| **Framework**      | Express.js            |
+| **Database**       | MongoDB Native Driver |
+| **Architecture**   | Modular Architecture  |
+| **Validation**     | Zod                   |
+| **Authentication** | JWT                   |
+| **Payment**        | Stripe                |
 
-Runtime
+## Backend Setup
 
-Node.js
-
-Framework
-
-Express.js
-
-Database
-
-MongoDB Native Driver
-
-Architecture
-
-Modular Architecture
-
-Validation
-
-Zod
-
-Authentication
-
-JWT
-
-Payment
-
-Stripe
-
-## Setup
-
-```bash
-npm install
-cp .env.example .env
-```
-
-## Commands
-
-```bash
-npm run dev
-npm run typecheck
-npm run build
-npm start
-```
+| ###             | Purpose                                          |
+| :-------------- | :----------------------------------------------- |
+| **Install**     | yarn                                             |
+| **Run Locally** | yarn dev                                         |
+| **Build**       | yarn run build (build & push the code to github) |
+| **Deploy**      | render: auto deploy from github                  |
 
 ## Architecture
 

@@ -1,9 +1,10 @@
 import { productRepository } from "./product.repository.js";
 import { ApiError } from "../../utils/api-error.js";
 import type { AnyDoc } from "../shared.js";
+import type { PaginationQuery } from "../../utils/pagination.js";
 
 export const productService = {
-  list: () => productRepository.findAll(),
+  list: (query: PaginationQuery) => productRepository.findAll(query),
 
   getPurchase: async (id: string) => {
     const product = await productRepository.findById(id);

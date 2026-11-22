@@ -19,7 +19,7 @@ export async function connectDatabase(): Promise<void> {
       database = client.db(env.DB_NAME);
 
       await database.command({ ping: 1 });
-      console.log(`MongoDB connected: ${env.DB_NAME}`);
+      console.log(`Database connected`);
     })().catch((error: unknown) => {
       connecting = null;
 

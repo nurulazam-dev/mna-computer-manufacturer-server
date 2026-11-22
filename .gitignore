@@ -2,12 +2,13 @@
 /node_modules
 /.pnp
 .pnp.js
+.pnp.*
 
 # testing
 /coverage
 
 # production
-dist/
+# dist/
 
 # misc
 .env
@@ -22,3 +23,5 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/.yarn

@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import { reviewService } from "./review.service.js";
 import type { AnyDoc } from "../shared.js";
-import { reviewSchema } from "./review.validation.js";
+import { reviewSchema, paginationQuerySchema } from "./review.validation.js";
 
 export const reviewController = {
-  list: async (_req: Request, res: Response) =>
-    res.json(await reviewService.list()),
+  list: async (req: Request, res: Response) =>
+    res.json({ success: true, message: "Reviews fetched successfully", ...(await reviewService.list(paginationQuerySchema.parse(req.query))) }),
 
   create: async (req: Request, res: Response) => {
     const data = reviewSchema.parse(req.body);

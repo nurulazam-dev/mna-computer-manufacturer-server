@@ -2,6 +2,7 @@ import { Router } from "express";
 import { productController } from "./product.controller.js";
 import { verifyJWT, requireAdmin } from "../../middlewares/auth.middleware.js";
 import { asyncHandler } from "../../utils/async-handler.js";
+import { sensitiveRateLimit } from "../../middlewares/rate-limit.middleware.js";
 
 export const productRouter = Router();
 
@@ -13,6 +14,7 @@ productRouter.post(
   "/",
   verifyJWT,
   requireAdmin,
+  sensitiveRateLimit,
   asyncHandler(productController.create),
 );
 

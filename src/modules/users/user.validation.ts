@@ -25,3 +25,5 @@ export const profileSchema = z
   .strict();
 
 export const signupQuerySchema = z.object({ email: z.string().email() });
+
+export { paginationQuerySchema } from "../../utils/pagination.js";

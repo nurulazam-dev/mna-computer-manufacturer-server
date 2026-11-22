@@ -5,21 +5,31 @@ import {
   idParamSchema,
   orderQuerySchema,
   paymentUpdateSchema,
+  paginationQuerySchema,
 } from "./order.validation.js";
 import { requireEmail, type AnyDoc } from "../shared.js";
 
 export const orderController = {
   listMine: async (req: Request, res: Response) => {
     const { customer } = orderQuerySchema.parse(req.query);
+    const pagination = paginationQuerySchema.parse(req.query);
 
     if (customer !== req.auth?.email)
       return res.status(403).json({ message: "Forbidden access" });
 
-    return res.json(await orderService.listMine(customer));
+    return res.json({
+      success: true,
+      message: "My orders fetched successfully",
+      ...(await orderService.listMine(customer, pagination)),
+    });
   },
 
-  listAll: async (_req: Request, res: Response) =>
-    res.json(await orderService.listAll()),
+  listAll: async (req: Request, res: Response) =>
+    res.json({
+      success: true,
+      message: "Orders fetched successfully",
+      ...(await orderService.listAll(paginationQuerySchema.parse(req.query))),
+    }),
 
   getOne: async (req: Request, res: Response) => {
     const { id } = idParamSchema.parse(req.params);

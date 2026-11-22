@@ -5,11 +5,12 @@ import {
   productSchema,
   idParamSchema,
   purchaseParamSchema,
+  paginationQuerySchema,
 } from "./product.validation.js";
 
 export const productController = {
-  list: async (_req: Request, res: Response) =>
-    res.json(await productService.list()),
+  list: async (req: Request, res: Response) =>
+    res.json({ success: true, message: "Products fetched successfully", ...(await productService.list(paginationQuerySchema.parse(req.query))) }),
 
   getPurchase: async (req: Request, res: Response) => {
     const { purchaseId } = purchaseParamSchema.parse(req.params);
