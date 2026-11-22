@@ -150,3 +150,27 @@ JWT
 Payment
 
 Stripe
+
+## Setup
+
+```bash
+npm install
+cp .env.example .env
+```
+
+## Commands
+
+```bash
+npm run dev
+npm run typecheck
+npm run build
+npm start
+```
+
+## Architecture
+
+- `config`: environment, database and third-party service setup
+- `middlewares`: authentication, error handling and not-found handling
+- `modules`: feature-based controllers, services, repositories, routes and validation
+- `routes`: central API router
+- `utils`: reusable helpers and application errors
