@@ -7,3 +7,5 @@ export const productSchema = z
 export const idParamSchema = z.object({ id: z.string().min(1) });
 
 export const purchaseParamSchema = z.object({ purchaseId: z.string().min(1) });
+
+export { paginationQuerySchema } from "../../utils/pagination.js";

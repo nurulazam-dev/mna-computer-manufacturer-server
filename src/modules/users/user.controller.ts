@@ -7,11 +7,12 @@ import {
   profileSchema,
   signupSchema,
   signupQuerySchema,
+  paginationQuerySchema,
 } from "./user.validation.js";
 
 export const userController = {
-  list: async (_req: Request, res: Response) =>
-    res.json(await userService.list()),
+  list: async (req: Request, res: Response) =>
+    res.json({ success: true, message: "Users fetched successfully", ...(await userService.list(paginationQuerySchema.parse(req.query))) }),
 
   get: async (req: Request, res: Response) => {
     const { email } = emailParamSchema.parse(req.params);

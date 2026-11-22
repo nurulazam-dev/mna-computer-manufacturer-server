@@ -5,9 +5,10 @@ import { env } from "../../config/env.js";
 import { requireOwnerOrAdmin } from "../../middlewares/auth.middleware.js";
 import type { Request } from "express";
 import type { AnyDoc } from "../shared.js";
+import type { PaginationQuery } from "../../utils/pagination.js";
 
 export const userService = {
-  list: () => userRepository.findAll(),
+  list: (query: PaginationQuery) => userRepository.findAll(query),
 
   getByEmail: async (email: string) => {
     const user = await userRepository.findByEmail(email);

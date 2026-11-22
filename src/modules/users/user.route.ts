@@ -2,6 +2,7 @@ import { Router } from "express";
 import { userController } from "./user.controller.js";
 import { verifyJWT, requireAdmin } from "../../middlewares/auth.middleware.js";
 import { asyncHandler } from "../../utils/async-handler.js";
+import { sensitiveRateLimit } from "../../middlewares/rate-limit.middleware.js";
 
 export const userRouter = Router();
 
@@ -15,7 +16,7 @@ userRouter.get(
 
 userRouter.get("/:email", asyncHandler(userController.get));
 
-userRouter.put("/", asyncHandler(userController.signup));
+userRouter.put("/", sensitiveRateLimit, asyncHandler(userController.signup));
 
 userRouter.put(
   "/admin/:id",
