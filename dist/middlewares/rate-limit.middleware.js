@@ -1,6 +1,4 @@
 const stores = new Map();
-// In-memory limiter: suitable for a single server instance. Use a shared store
-// (for example Redis) when running multiple instances/serverless functions.
 const cleanup = setInterval(() => {
     const now = Date.now();
     for (const [key, entry] of stores)
@@ -24,12 +22,19 @@ export function rateLimit(options) {
         res.setHeader("RateLimit-Reset", Math.ceil(entry.resetAt / 1000));
         if (entry.count > options.max) {
             res.setHeader("Retry-After", Math.max(1, Math.ceil((entry.resetAt - now) / 1000)));
-            res.status(429).json({ success: false, message: options.message ?? "Too many requests. Please try again later." });
+            res.status(429).json({
+                success: false,
+                message: options.message ?? "Too many requests. Please try again later.",
+            });
             return;
         }
         next();
     };
 }
 export const apiRateLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 300 });
-export const sensitiveRateLimit = rateLimit({ windowMs: 15 * 60 * 1000, max: 30, message: "Too many requests. Please try again after 15 minutes." });
+export const sensitiveRateLimit = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 30,
+    message: "Too many requests. Please try again after 15 minutes.",
+});
 //# sourceMappingURL=rate-limit.middleware.js.map

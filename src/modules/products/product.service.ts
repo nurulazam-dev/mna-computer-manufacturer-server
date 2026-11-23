@@ -8,6 +8,7 @@ export const productService = {
 
   getPurchase: async (id: string) => {
     const product = await productRepository.findById(id);
+
     if (!product) throw new ApiError(404, "Product not found");
     return product;
   },
@@ -16,6 +17,7 @@ export const productService = {
 
   remove: async (id: string) => {
     const result = await productRepository.deleteById(id);
+
     if (!result.deletedCount) throw new ApiError(404, "Product not found");
     return result;
   },
