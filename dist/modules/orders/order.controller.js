@@ -2,7 +2,7 @@ import { orderService } from "./order.service.js";
 import { createOrderSchema, idParamSchema, orderQuerySchema, paymentUpdateSchema, paginationQuerySchema, } from "./order.validation.js";
 import { requireEmail } from "../shared.js";
 export const orderController = {
-    listMine: async (req, res) => {
+    myOrders: async (req, res) => {
         const { customer } = orderQuerySchema.parse(req.query);
         const pagination = paginationQuerySchema.parse(req.query);
         if (customer !== req.auth?.email)
@@ -10,7 +10,7 @@ export const orderController = {
         return res.json({
             success: true,
             message: "My orders fetched successfully",
-            ...(await orderService.listMine(customer, pagination)),
+            ...(await orderService.myOrders(customer, pagination)),
         });
     },
     listAll: async (req, res) => res.json({

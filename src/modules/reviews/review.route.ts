@@ -8,4 +8,9 @@ export const reviewRouter = Router();
 
 reviewRouter.get("/", asyncHandler(reviewController.list));
 
-reviewRouter.post("/", verifyJWT, sensitiveRateLimit, asyncHandler(reviewController.create));
+reviewRouter.post(
+  "/",
+  verifyJWT,
+  sensitiveRateLimit,
+  asyncHandler(reviewController.create),
+);

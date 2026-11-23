@@ -10,7 +10,7 @@ import {
 import { requireEmail, type AnyDoc } from "../shared.js";
 
 export const orderController = {
-  listMine: async (req: Request, res: Response) => {
+  myOrders: async (req: Request, res: Response) => {
     const { customer } = orderQuerySchema.parse(req.query);
     const pagination = paginationQuerySchema.parse(req.query);
 
@@ -20,7 +20,7 @@ export const orderController = {
     return res.json({
       success: true,
       message: "My orders fetched successfully",
-      ...(await orderService.listMine(customer, pagination)),
+      ...(await orderService.myOrders(customer, pagination)),
     });
   },
 

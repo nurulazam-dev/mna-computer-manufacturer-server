@@ -34,8 +34,10 @@ export const orderRepository = {
     ]);
     return { data, meta: getPagination(page, limit, total) };
   },
+
   findById: (id: string) =>
     getCollections().orders.findOne({ _id: objectId(id) }),
+
   findByCustomer: async (email: string, query: PaginationQuery) => {
     const { page, limit } = query;
     const filter = { customer: email };
@@ -50,15 +52,19 @@ export const orderRepository = {
     ]);
     return { data, meta: getPagination(page, limit, total) };
   },
+
   create: (data: AnyDoc) => getCollections().orders.insertOne(data),
+
   updateById: (id: string, update: AnyDoc) =>
     getCollections().orders.updateOne({ _id: objectId(id) }, update),
+
   markPaid: (id: ObjectId, transactionId: string, session: ClientSession) =>
     getCollections().orders.updateOne(
       { _id: id, paid: { $ne: true } },
       { $set: { paid: true, transactionId } },
       { session },
     ),
+
   deleteById: (id: string) =>
     getCollections().orders.deleteOne({ _id: objectId(id) }),
 };

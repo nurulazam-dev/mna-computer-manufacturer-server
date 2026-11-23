@@ -4,5 +4,6 @@ import type { PaginationQuery } from "../../utils/pagination.js";
 
 export const reviewService = {
   list: (query: PaginationQuery) => reviewRepository.findAll(query),
+
   create: (data: AnyDoc) => reviewRepository.create(data),
 };

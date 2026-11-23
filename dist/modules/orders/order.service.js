@@ -12,7 +12,7 @@ function orderAmount(order) {
     return Math.round(amount * 100);
 }
 export const orderService = {
-    listMine: (email, query) => orderRepository.findByCustomer(email, query),
+    myOrders: (email, query) => orderRepository.findByCustomer(email, query),
     listAll: (query) => orderRepository.findAll(query),
     getOne: async (req, id) => {
         const order = await orderRepository.findById(id);

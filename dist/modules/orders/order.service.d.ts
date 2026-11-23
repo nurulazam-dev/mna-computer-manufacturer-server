@@ -2,7 +2,7 @@ import type { Request } from "express";
 import type { AnyDoc } from "../shared.js";
 import type { PaginationQuery } from "../../utils/pagination.js";
 export declare const orderService: {
-    listMine: (email: string, query: PaginationQuery) => Promise<{
+    myOrders: (email: string, query: PaginationQuery) => Promise<{
         data: import("mongodb").WithId<import("bson").Document>[];
         meta: {
             page: number;
